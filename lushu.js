@@ -236,7 +236,19 @@ var LUSHU_STAY_POINT = 0x1234567;
             return Math.sqrt(Math.pow(f.x - e.x, 2) + Math.pow(f.y - e.y, 2))
         },
         _move: function (n, j, m) {
-            var i = this, h = 0, e = 10, f = this._opts.speed / (1000 / e), l = this._projection.lngLatToPoint(n), k = this._projection.lngLatToPoint(j), g = Math.round(i._getDistance(l, k) / f);
+            var i = this;
+            if (!(j instanceof BMap.Point) && j.behavior && typeof(j.behavior) == 'function')
+            {
+                clearInterval(this._intervalFlag);
+                j.behavior(i._map, i, i._marker);
+                setTimeout(function()
+                {
+                    if (j.clear && typeof(j.clear) == 'function') j.clear(i._map, i, i._marker);
+                    i._moveNext(i.i += 2);
+                }, j.timeout);
+                return;
+            }
+            var h = 0, e = 10, f = this._opts.speed / (1000 / e), l = this._projection.lngLatToPoint(n), k = this._projection.lngLatToPoint(j), g = Math.round(i._getDistance(l, k) / f);
             if (g < 1) {
                 i._moveNext(++i.i);
                 return

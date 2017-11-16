@@ -43,6 +43,32 @@
                 var polyline = new BMap.Polyline(route, { strokeColor : '#ffffff' });
                 map.addOverlay(polyline);
 
+                // 中途加个跳动动画
+                route[100] = {
+                    timeout : 2000,
+                    behavior : function(map, lushu, marker)
+                    {
+                        marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                    },
+                    clear : function(map, lushu, marker)
+                    {
+                        marker.setAnimation(null);
+                    }
+                };
+
+                // 在最后加个跳动动画
+                route.push({
+                    timeout : 4000,
+                    behavior : function(map, lushu, marker)
+                    {
+                        marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                    },
+                    clear : function(map, lushu, marker)
+                    {
+                        marker.setAnimation(null);
+                    }
+                });
+
                 var lushu = new BMapLib.LuShu(map, route, {
                     icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
                     autoView : true,
