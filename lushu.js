@@ -1,5 +1,4 @@
 var BMapLib = window.BMapLib = BMapLib || {};
-var LUSHU_STAY_POINT = 0x1234567;
 (function () {
     var b, a = b = a || {version: "1.5.0"};
     a.guid = "$BAIDU$";
