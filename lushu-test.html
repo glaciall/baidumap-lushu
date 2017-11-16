@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路书测试</title>
+    <style type="text/css">
+        html, body
+        {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+        .anchorBL
+        {
+            /* 隐藏百度地址LOGO */
+            display: none !important;
+        }
+    </style>
+</head>
+<body id="mapContainer">
+</body>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=pFIG4twCDUZWu6ViZsv8jQAFH2NmHxc7"></script>
+<script type="text/javascript" src="./lushu.js"></script>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        // 地图初始化
+        var map = new BMap.Map('mapContainer', { enableMapClick : false });
+        map.setMapStyle({style:'midnight'});
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+        map.setCurrentCity("北京");
+        map.enableScrollWheelZoom(true);
+
+        // 使用路线规划功能创建路书线路
+        var driving = new BMap.DrivingRoute('北京', {
+            onSearchComplete : function(result)
+            {
+                if (driving.getStatus() != BMAP_STATUS_SUCCESS) return;
+
+                var route = result.getPlan(0).getRoute(0).getPath();
+                var polyline = new BMap.Polyline(route, { strokeColor : '#ffffff' });
+                map.addOverlay(polyline);
+
+                var lushu = new BMapLib.LuShu(map, route, {
+                    icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+                    autoView : true,
+                    speed : 4500,
+                    enableRotation : true
+                });
+                lushu.start();
+            }
+        });
+        driving.search('西直门地铁站', '宋家庄地铁站');
+    });
+</script>
+</html>
