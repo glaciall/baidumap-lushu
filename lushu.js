@@ -216,7 +216,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             this._overlay && this._map.removeOverlay(this._overlay);
             var e = new BMap.Marker(this._path[0]);
             this._opts.icon && e.setIcon(this._opts.icon);
-            e.setOffset(new BMap.Size(0, 0 -this._opts.icon.size.height / 2));
+            // e.setOffset(new BMap.Size(0, 0 -this._opts.icon.size.height / 2));
             this._map.addOverlay(e);
             e.setAnimation(BMAP_ANIMATION_DROP);
             this._marker = e
